@@ -1,0 +1,90 @@
+{% macro get_dummy_col_sql(temp_relation, target_relation, sql) %}
+    {%- set extra_col_sql -%}
+        select
+            *,
+            'dummy_value' as dummy_column,
+            'dummy_one' as dummy_column_one,
+            'dummy_two' as dummy_column_two
+        from {{ temp_relation }}
+    {%- endset -%}
+
+    {{- get_replace_table_as_sql(target_relation, extra_col_sql) -}}
+{% endmacro %}
+---------------------------------
+
+{% macro get_dummy_col_sql(temp_relation, target_relation, sql) %}
+    {%- set extra_col_sql -%}
+        select
+            *,
+            'dummy_value' as dummy_column,
+            'dummy_one' as dummy_column_one,
+            'dummy_two' as dummy_column_two
+        from {{ temp_relation }}
+    {%- endset -%}
+
+    {# Check if the target table already exists #}
+    {%- set existing_table = ref(target_relation) -%}
+
+    {# If target table exists, insert the dummy columns into it #}
+    {%- if exists(existing_table) -%}
+        {{- get_replace_table_as_sql(target_relation, extra_col_sql) -}}
+    {%- else -%}
+        {{- raise('Target table does not exist. The get_dummy_col_sql macro is only applicable when the target table exists.') -}}
+    {%- endif -%}
+{% endmacro %}
+----------------
+
+{% macro get_dummy_col_sql(temp_relation, target_relation, sql) %}
+    {%- set extra_col_sql -%}
+        select
+            'dummy_value' as dummy_column,
+            'dummy_one' as dummy_column_one,
+            'dummy_two' as dummy_column_two
+    {%- endset -%}
+
+    {# Check if the target table already exists #}
+    {%- set existing_table = ref(target_relation) -%}
+
+    {# If target table exists, use ALTER TABLE to add the dummy columns #}
+    {%- if exists(existing_table) -%}
+        ALTER TABLE {{ target_relation }}
+        ADD COLUMN dummy_column VARCHAR(255),
+        ADD COLUMN dummy_column_one VARCHAR(255),
+        ADD COLUMN dummy_column_two VARCHAR(255);
+
+        {{ sql }}
+    {%- else -%}
+        {{- raise('Target table does not exist. The get_dummy_col_sql macro is only applicable when the target table exists.') -}}
+    {%- endif -%}
+{% endmacro %}
+
+-----------------
+
+{% macro get_dummy_col_sql(temp_relation, target_relation, sql) %}
+    {%- set extra_col_sql -%}
+        SELECT
+            'dummy_value' AS dummy_column,
+            'dummy_one' AS dummy_column_one,
+            'dummy_two' AS dummy_column_two
+    {%- endset -%}
+
+    {# Check if the target table already exists #}
+    {%- set existing_table = ref(target_relation) -%}
+
+    {# If target table exists, use ALTER TABLE to add the dummy columns #}
+    {%- if exists(existing_table) -%}
+        -- Add columns if they don't already exist
+        ALTER TABLE {{ target_relation }}
+        ADD COLUMN IF NOT EXISTS dummy_column VARCHAR(255),
+        ADD COLUMN IF NOT EXISTS dummy_column_one VARCHAR(255),
+        ADD COLUMN IF NOT EXISTS dummy_column_two VARCHAR(255);
+
+        -- Insert dummy values into the newly added columns
+        INSERT INTO {{ target_relation }}
+        {{ extra_col_sql }};
+
+        {{ sql }}
+    {%- else -%}
+        {{- raise('Target table does not exist. The get_dummy_col_sql macro is only applicable when the target table exists.') -}}
+    {%- endif -%}
+{% endmacro %}
