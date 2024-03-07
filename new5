@@ -1,0 +1,21 @@
+{% macro get_dummy_col_sql(temp_relation, target_relation, sql) %}
+    {{- get_create_table_as_sql(False, temp_relation, sql) -}}
+
+    {# Add the new column to the target relation #}
+    {% set alter_sql %}
+        ALTER TABLE {{ target_relation }}
+        ADD COLUMN dummy_column VARCHAR(255) DEFAULT 'dummy_value'
+    {% endset %}
+    
+    {# Execute the ALTER TABLE statement #}
+    {{ adapter.execute_sql(alter_sql) }}
+
+    {# Construct the INSERT statement to populate the new column with default values #}
+    {% set insert_sql %}
+        INSERT INTO {{ target_relation }} (dummy_column)
+        SELECT 'dummy_value' AS dummy_column
+    {% endset %}
+    
+    {# Execute the INSERT statement #}
+    {{ adapter.execute_sql(insert_sql) }}
+{% endmacro %}
