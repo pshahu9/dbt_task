@@ -1,0 +1,76 @@
+
+
+{% macro get_dummy_col_sql(temp_relation, target_relation, sql) %}
+    {{- get_create_table_as_sql(False, temp_relation, sql) -}}
+
+    {%- set target_columns = adapter.get_columns_in_relation(target_relation) -%}
+    {%- set quoted_csv_columns = get_quoted_csv(target_columns | map(attribute="name")) -%}
+	
+	ALTER TABLE {{ target_relation }}
+
+    insert into {{ target_relation }}({{ quoted_csv_columns }})
+    select
+        *,
+        'dummy_value' as dummy_column
+    from {{ target_relation }}
+{% endmacro %}
+
+..........................error...............
+
+12:53:37 Began running node model.my_new_project.m_policy_model_dummy
+12:53:37 1 of 1 START sql dummy_col model DBT_DEMO.m_policy_model_dummy ................. [RUN]
+12:53:37 Acquiring new snowflake connection 'model.my_new_project.m_policy_model_dummy'
+12:53:37 Began compiling node model.my_new_project.m_policy_model_dummy
+12:53:37 Writing injected SQL for node "model.my_new_project.m_policy_model_dummy"
+12:53:37 Timing info for model.my_new_project.m_policy_model_dummy (compile): 12:53:37.591016 => 12:53:37.617404
+12:53:37 Began executing node model.my_new_project.m_policy_model_dummy
+12:53:37 Using snowflake connection "model.my_new_project.m_policy_model_dummy"
+12:53:37 On model.my_new_project.m_policy_model_dummy: describe table RAW_DATA.DBT_DEMO.m_policy_model_dummy
+12:53:37 Opening a new connection, currently in state init
+12:53:37 SQL status: SUCCESS 9 in 0.0 seconds
+12:53:37 Writing runtime sql for node "model.my_new_project.m_policy_model_dummy"
+12:53:37 Using snowflake connection "model.my_new_project.m_policy_model_dummy"
+12:53:37 On model.my_new_project.m_policy_model_dummy: create or replace transient table RAW_DATA.DBT_DEMO.m_policy_model_dummy__dbt_tmp
+         as
+        (
+
+with pol as(
+    select * from spectra_dbt_dev_db.dev_curated.stg_policy_ext
+),
+
+final as(
+    select 
+        policy_id,
+        policy_number,
+        policy_state,
+        customer_id,
+        policy_scope,
+        capital_gains,
+        capital_loss
+
+    from
+        pol
+)
+
+select * from final limit 5
+        );
+12:53:38 SQL status: SUCCESS 1 in 1.0 seconds
+12:53:38 Using snowflake connection "model.my_new_project.m_policy_model_dummy"
+12:53:38 On model.my_new_project.m_policy_model_dummy: ALTER TABLE RAW_DATA.DBT_DEMO.m_policy_model_dummy
+
+    insert into RAW_DATA.DBT_DEMO.m_policy_model_dummy("POLICY_ID", "POLICY_NUMBER", "POLICY_STATE", "CUSTOMER_ID", "POLICY_SCOPE", "CAPITAL_GAINS", "CAPITAL_LOSS", "DUMMY_COLUMN", "DUMMY_COLUMN_ONE")
+    select
+        *,
+        'dummy_value' as dummy_column
+    from RAW_DATA.DBT_DEMO.m_policy_model_dummy
+12:53:38 Snowflake adapter: Snowflake query id: 01b2d425-0604-5ce3-0072-f3030e682d66
+12:53:38 Snowflake adapter: Snowflake error: 001003 (42000): SQL compilation error:
+syntax error line 3 at position 4 unexpected 'insert'.
+12:53:38 Timing info for model.my_new_project.m_policy_model_dummy (execute): 12:53:37.618557 => 12:53:38.908521
+12:53:38 On model.my_new_project.m_policy_model_dummy: Close
+12:53:38 Database Error in model m_policy_model_dummy (models/dev/m_policy_model_dummy.sql)
+  001003 (42000): SQL compilation error:
+  syntax error line 3 at position 4 unexpected 'insert'.
+  compiled Code at target/run/my_new_project/models/dev/m_policy_model_dummy.sql
+12:53:38 1 of 1 ERROR creating sql dummy_col model DBT_DEMO.m_policy_model_dummy ........ [[31mERROR[0m in 1.37s]
+12:53:38 Finished running node model.my_new_project.m_policy_model_dummy
