@@ -1,0 +1,15 @@
+{% macro get_dummy_col_sql(temp_relation, target_relation, sql) %}
+    {{- get_create_table_as_sql(False, temp_relation, sql) -}}
+
+    {%- set target_columns = adapter.get_columns_in_relation(target_relation) -%}
+    {%- set quoted_csv_columns = get_quoted_csv(target_columns | map(attribute="name")) -%}
+	
+	ALTER TABLE {{ target_relation }}
+    ADD COLUMN dummy_column STRING DEFAULT 'dummy_value';
+    
+    INSERT INTO {{ target_relation }}({{ quoted_csv_columns }})
+    SELECT
+        *,
+        'dummy_value' AS dummy_column
+    FROM {{ target_relation }};
+{% endmacro %}
