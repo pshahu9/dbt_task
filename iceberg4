@@ -1,0 +1,31 @@
+{% materialization iceberg, adapter='default' %}
+    {% set iceberg_sql %}
+        CREATE ICEBERG TABLE {{ this }}
+        AS (
+            {{ sql }}
+        )
+        EXTERNAL_VOLUME = '{{ external_volume }}'
+        CATALOG = '{{ catalog }}'
+        BASE_LOCATION = '{{ base_location }}'
+    {% endset %}
+    {% call statement('main') %}
+        {{ iceberg_sql }}
+    {% endcall %}
+    {{ return({'relations': [this]}) }}
+{% endmaterialization %}
+
+-- my_model.sql
+
+-- Model configuration block
+{{ config(
+    materialized='iceberg',
+    external_volume='S3_ICEBERG_STORE',
+    catalog='SNOWFLAKE',
+    base_location=''
+) }}
+
+-- SQL query for your model
+select
+    ...
+from
+    ...
