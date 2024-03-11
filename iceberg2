@@ -1,0 +1,78 @@
+-----------ICEBERG TABLES
+
+{% materialization iceberg, adapter='default' %}
+    {% call statement('main') %}
+        {%- set table_name = this -%}
+        CREATE ICEBERG TABLE {{ table_name }} AS (
+            {{ sql }}
+        )
+    {% endcall %}
+    {{ return({'relations': [this]}) }}
+{% endmaterialization %}
+
+--------------
+
+{% materialization iceberg, adapter='default' %}
+    {% call statement('main') %}
+        {%- set table_name = this -%}
+        CREATE ICEBERG TABLE {{ table_name }} (
+            {{ sql }}
+        )
+        EXTERNAL_VOLUME = 'S3_ICEBERG_STORE'
+        CATALOG = 'SNOWFLAKE'
+        BASE_LOCATION = ''
+    {% endcall %}
+    {{ return({'relations': [this]}) }}
+{% endmaterialization %}
+
+---------
+
+{% macro create_iceberg_table(table_name, sql, external_volume, catalog, base_location) %}
+    CREATE ICEBERG TABLE {{ table_name }} (
+        {{ sql }}
+    )
+    EXTERNAL_VOLUME = '{{ external_volume }}'
+    CATALOG = '{{ catalog }}'
+    BASE_LOCATION = '{{ base_location }}'
+{% endmacro %}
+
+{% materialization iceberg, adapter='default' %}
+    {% call statement('main') %}
+        {{ create_iceberg_table(this, sql, external_volume, catalog, base_location) }}
+    {% endcall %}
+    {{ return({'relations': [this]}) }}
+{% endmaterialization %}
+
+{{ config(
+    materialized='iceberg',
+    external_volume='S3_ICEBERG_STORE',
+    catalog='SNOWFLAKE',
+    base_location=''
+) }}
+
+select
+    column1,
+    column2
+from
+    source_table
+
+--------------------------
+
+{% materialization iceberg, adapter='default' %}
+    {% macro create_iceberg_table(table_name, sql, external_volume, catalog, base_location) %}
+        CREATE ICEBERG TABLE {{ table_name }} (
+            {{ sql }}
+        )
+        EXTERNAL_VOLUME = '{{ external_volume }}'
+        CATALOG = '{{ catalog }}'
+        BASE_LOCATION = '{{ base_location }}'
+    {% endmacro %}
+
+    {% call statement('main') %}
+        {{ create_iceberg_table(this, sql, external_volume, catalog, base_location) }}
+    {% endcall %}
+    {{ return({'relations': [this]}) }}
+{% endmaterialization %}
+
+
+------------------------------------
