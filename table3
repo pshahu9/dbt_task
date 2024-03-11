@@ -1,0 +1,15 @@
+{% materialization custom_table_creation, default %}
+
+{% macro custom_table_creation(target_relation, sql) %}
+    {# Check if the target table already exists #}
+    {% set table_exists = adapter.check_relation(target_relation) %}
+    
+    {# If the table doesn't exist, create it #}
+    {% if not table_exists %}
+        {{ adapter.quote('CREATE TABLE') }} {{ target_relation }} AS (
+            {{ sql }}
+        )
+    {% endif %}
+{% endmacro %}
+
+{% endmaterialization %}
