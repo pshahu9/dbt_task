@@ -1,0 +1,12 @@
+{% materialization iceberg, adapter='default' %}
+    {% call statement('main') %}
+        CREATE ICEBERG TABLE {{ this }}
+        AS (
+            {{ sql }}
+        )
+        EXTERNAL_VOLUME = '{{ external_volume }}'
+        CATALOG = '{{ catalog }}'
+        BASE_LOCATION = '{{ base_location }}'
+    {% endcall %}
+    {{ return({'relations': [this]}) }}
+{% endmaterialization %}
