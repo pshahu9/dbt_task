@@ -1,0 +1,13 @@
+{% materialization custom_table_creation, default %}
+
+{# Check if the target table already exists #}
+{% set table_exists = adapter.check_relation(target.schema, target.name) %}
+
+{# If the table doesn't exist, create it #}
+{% if not table_exists %}
+    CREATE TABLE {{ target.schema }}.{{ target.name }} AS (
+        {{ sql }}
+    );
+{% endif %}
+
+{% endmaterialization %}
