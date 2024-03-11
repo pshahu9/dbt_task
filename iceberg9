@@ -1,0 +1,17 @@
+{% macro create_iceberg_table(table_name, sql, external_volume, catalog, base_location) %}
+    CREATE ICEBERG TABLE {{ table_name }} (
+        {{ sql }}
+    )
+    EXTERNAL_VOLUME = '{{ external_volume }}'
+    CATALOG = '{{ catalog }}'
+    BASE_LOCATION = '{{ base_location }}';
+{% endmacro %}
+
+{% materialization iceberg, adapter='default' %}
+
+    {% call statement('main') %}
+        {{ create_iceberg_table(this, sql, external_volume, catalog, base_location) }}
+    {% endcall %}
+
+    {{ return({'relations': [this]}) }}
+{% endmaterialization %}
