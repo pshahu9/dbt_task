@@ -1,0 +1,7 @@
+{% materialization mat_name, adapter='default' %}
+    {% call statement('main') %}
+        create table {{ this }}
+        as ({{ sql }})
+    {% endcall %}
+    {{ return({'relations': [this]}) }}
+{% endmaterialization %}
