@@ -1,0 +1,15 @@
+{% materialization iceberg, adapter='default' %}
+    {% macro create_iceberg_table(table_name, sql, external_volume, catalog, base_location) %}
+        CREATE TABLE {{ table_name }} AS (
+            {{ sql }}
+        )
+        EXTERNAL_VOLUME = '{{ external_volume }}'
+        CATALOG = '{{ catalog }}'
+        BASE_LOCATION = '{{ base_location }}'
+    {% endmacro %}
+
+    {% call statement('main') %}
+        {{ create_iceberg_table(this, sql, 'S3_ICEBERG_STORE', 'SNOWFLAKE', '') }}
+    {% endcall %}
+    {{ return({'relations': [this]}) }}
+{% endmaterialization %}
