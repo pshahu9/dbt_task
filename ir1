@@ -1,0 +1,28 @@
+{% materialization iceberg, adapter='default' %}
+    {% call statement('main') %}
+        {{ generate_iceberg_sql(this, sql, this.config.materialized) }}
+    {% endcall %}
+    {{ return({'relations': [this]}) }}
+{% endmaterialization %}
+
+{% macro generate_iceberg_sql(model_name, sql, current_materialization) %}
+    {# Check if the current materialization is 'table' #}
+    {% if current_materialization == 'table' %}
+        {# If the current materialization is 'table', generate Iceberg table SQL #}
+        {% set iceberg_sql %}
+            CREATE OR REPLACE ICEBERG TABLE {{ model_name }}
+            EXTERNAL_VOLUME = 'ICEBERG_EXT_VOL_2024'
+            CATALOG = 'SNOWFLAKE'
+            BASE_LOCATION = ''
+            AS (
+                {{ sql }}
+            )      
+        {% endset %}
+    {% else %}
+        {# If the current materialization is not 'table', return an error message #}
+        {% set iceberg_sql = "ERROR: Cannot convert materialization to Iceberg table. Current materialization is not 'table'." %}
+    {% endif %}
+    
+    {# Return the generated SQL #}
+    {{ iceberg_sql }}
+{% endmacro %}
