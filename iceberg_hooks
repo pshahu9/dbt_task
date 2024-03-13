@@ -1,0 +1,21 @@
+{% materialization iceberg_dynamic, adapter='default' %}
+{% set external_volume =  config.require('external_volume',) %}
+{% set catalog = config.require('catalog',)%}
+{% set base_location = config.get('base_location', default='')%}
+{{- run_hooks(pre_hooks) -}}
+    {% call statement('main') %}
+        {{ create_iceberg_table(this, sql, external_volume, catalog, base_location) }}
+    {% endcall %}
+{{- run_hooks(post_hooks) -}}
+    {{ return({'relations': [this]}) }}
+{% endmaterialization %}
+
+{% macro create_iceberg_table(table_name, sql, external_volume, catalog, base_location) %}
+    CREATE OR REPLACE ICEBERG TABLE {{ table_name }}
+	EXTERNAL_VOLUME = '{{ external_volume }}'
+    CATALOG = '{{ catalog }}'
+    BASE_LOCATION = '{{ base_location }}'	
+    AS (
+        {{ sql }}
+    )
+{% endmacro %}
