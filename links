@@ -3,3 +3,5 @@ https://beta.bi3technologies.com/2023/09/07/creating-custom-materialization-in-d
 cheatsheet: https://handbook.gitlab.com/handbook/business-technology/data-team/platform/dbt-guide/
 
 query tags: https://towardsai.net/p/machine-learning/dbt-set-snowflake-query-tag-for-each-dbt-model-tip-2#:~:text=Query%20tags%20are%20a%20Snowflake%20parameter%20that%20can,all%20the%20queries%20triggered%20from%20DBT%20to%20Snowflake.
+
+all custom materialization moacros: https://github.com.mcas.ms/dbt-labs/dbt-snowflake/blob/main/dbt/include/snowflake/macros/materializations/table.sql
