@@ -15,3 +15,8 @@ sources:
     tables:
       - name: dummy_two
       - name: stg_policy_ext
+  - name: dbt_custom
+    database: SPECTRA_DBT_DEV_DB
+    schema: DEV_CURATED
+    tables:
+      - name: my_source

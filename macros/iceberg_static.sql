@@ -1,0 +1,15 @@
+{% materialization iceberg_static, adapter='default' %}
+    {% set iceberg_sql %}
+        CREATE OR REPLACE ICEBERG TABLE {{ this }}
+        EXTERNAL_VOLUME = 'ICEBERG_EXT_VOL_2024'
+        CATALOG = 'SNOWFLAKE'
+        BASE_LOCATION = ''
+        AS (
+            {{ sql }}
+        )      
+    {% endset %}
+    {% call statement('main') %}
+        {{ iceberg_sql }}
+    {% endcall %}
+    {{ return({'relations': [this]}) }}
+{% endmaterialization %}

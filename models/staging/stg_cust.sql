@@ -1,12 +1,3 @@
-with cust as(
-    select * from {{ source('src_table', 'customer') }}
-),
+{{ config(materialized = 'dummy_col') }}
 
-final as(
-    select
-        *
-    from    
-        cust
-)
-
-select * from final
+select * from {{ source('src_table', 'customer') }}
