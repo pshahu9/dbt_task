@@ -1,0 +1,18 @@
+{{
+    config(
+        materialized = 'dynamic_table',
+        snowflake_warehouse = 'FOSFOR_SPECTRA',
+        target_lag = '100',
+        on_configuration_change = 'apply',
+    )
+}}
+
+with custo as(
+    select * from {{ ref('customer_orders') }}
+),
+
+final as(
+    select order_count from custo order by order_count desc
+)
+
+select * from final
