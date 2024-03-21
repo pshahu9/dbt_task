@@ -1,0 +1,56 @@
+version: 2
+
+sources:
+  - name: our_source
+    tables:
+      - name: stg_policy_dual_new_nine
+        description: 
+            This source table is actually a set of files in external storage.
+            The dbt-external-tables package provides handy macros for getting
+            those files queryable, just in time for modeling.
+                            
+        external:
+          location: "@my_s3_stg"      # required: S3 file path, GCS file path, Snowflake stage, Synapse data source
+          file_format: "( type = csv skip_header=1)"
+        # Specify ALL column names + datatypes.
+        # Column order must match for CSVs, column names must match for other formats.
+        # Some databases support schema inference.
+
+        columns:
+          - name: POLICY_NUMBER
+            data_type: varchar(50)
+            description: "Policy number"
+          - name: POLICY_BIND_DATE
+            data_type: varchar(50)
+            description: "Policy number"
+          - name: POLICY_STATE
+            data_type: varchar(50)
+            description: "State"
+          - name: POLICY_CSL
+            data_type: varchar(50)
+            description: "CSL"
+          - name: POLICY_DEDUCTABLE
+            data_type: varchar(50)
+            description: "Deductable"
+          - name: POLICY_ANNUAL_PREMIUM
+            data_type: varchar(50)
+            description: "Premium"
+          - name: UMBRELLA_LIMIT
+            data_type: varchar(50)
+            description: "Limit"   
+          - name: CUSTOMER_ID
+            data_type: varchar(50)
+            description: "Customer"
+          - name: POLICY_SCOPE
+            data_type: varchar(50)
+            description: "Customer"
+          - name: CAPITAL_GAINS
+            data_type: varchar(50)
+            description: "Customer"
+          - name: CAPITAL_LOSS
+            data_type: varchar(50)
+            description: "Loss"
+          - name: AUTO_MAKE
+            data_type: varchar(50)
+            description: "Make"
+

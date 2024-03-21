@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: src_table
+    database: SPECTRA_DBT_DEV_DB  
+    schema: DEV_RAW
+    tables:
+      - name: claim
+      - name: customer
+      - name: incident
+      - name: policy
+  - name: ext_table
+    database: SPECTRA_DBT_DEV_DB
+    schema: DEV_CURATED
+    tables:
+      - name: dummy_two
+      - name: stg_policy_ext
