@@ -1,0 +1,25 @@
+{% macro create_iceberg_table(table_name, sql, external_volume, catalog, base_location, cluster_by_column=None) %}
+    CREATE OR REPLACE ICEBERG TABLE {{ table_name }}
+    EXTERNAL_VOLUME = '{{ external_volume }}'
+    CATALOG = '{{ catalog }}'
+    BASE_LOCATION = '{{ base_location }}'
+    {% if cluster_by_column %}
+    CLUSTER BY {{ cluster_by_column }}
+    {% endif %}
+    AS (
+        {{ sql }}
+    )
+{% endmacro %}
+
+{% call statement('main') %}
+    {{ create_iceberg_table(target_relation, sql, external_volume, catalog, base_location, cluster_by_column='column_name') }}
+{% endcall %}
+
+{{ create_iceberg_table(
+    target_relation=ref('my_model'),
+    sql='SELECT * FROM my_source_table',
+    external_volume='ICEBERG_EXT_VOL_2024',
+    catalog='SNOWFLAKE',
+    base_location='',
+    cluster_by_column='column_name'
+) }}
