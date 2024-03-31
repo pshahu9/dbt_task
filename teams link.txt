@@ -1,0 +1,1221 @@
+
+Message List
+Link https://docs.getdbt.com/blog/grouping-... by Pradhnya Shahu
+9/23/23 6:39 PM
+Pradhnya Shahu
+
+https://docs.getdbt.com/blog/grouping-data-tests
+
+Link https://github.com/dbt-labs/dbt-utils/... by Pradhnya Shahu
+9/23/23 6:41 PMPradhnya Shahu
+
+https://github.com/dbt-labs/dbt-utils/pull/633
+
+Link https://hub.getdbt.com/ by Pradhnya Shahu
+9/23/23 6:47 PM
+Pradhnya Shahu
+
+https://hub.getdbt.com/
+
+***SNOWFLAKE PASSWORD DETAILS FOR (SUNIL) A... by Pradhnya Shahu
+9/23/23 6:49 PMPradhnya Shahu
+
+***SNOWFLAKE PASSWORD DETAILS FOR (SUNIL) ACCOUNT****:
+====================================================
+Account name  - fya62509.us-east-1
+warehouse    - FOSFOR_SPECTRA
+username    - sunilm.kumar@lntinfotech.com
+Region      - us-east-1
+ROLE      - ACCOUNTADMIN
+Password    - Spectra@2022
+
+ 
+
+https://fya62509.us-east-1.snowflakecomputing.com/console
+
+September 25, 2023
+341140.1 by Pradhnya Shahu
+9/25/23 11:35 AM
+Pradhnya Shahu
+
+341140.1
+
+Link https://hub.getdbt.com/calogica/dbt_ex... by Pradhnya Shahu
+9/25/23 9:09 PM
+Pradhnya Shahu
+
+https://hub.getdbt.com/calogica/dbt_expectations/latest/
+
+September 26, 2023
+Link https://docs.getdbt.com/blog/data-vaul... by Pradhnya Shahu
+9/26/23 2:34 PM
+Pradhnya Shahu
+
+https://docs.getdbt.com/blog/data-vault-with-dbt-cloud#:~:text=Data%20Vault%20is%20the%20dam,data%20straight%20from%20the%20source.
+
+Url Preview for Data Vault 2.0 with dbt Cloud | dbt Developer Blog
+Data Vault 2.0 with dbt Cloud | dbt Developer Blog
+
+When to use, and when not to use Data Vault 2.0 data modeling, and why dbt Cloud is a great choice
+
+docs.getdbt.com
+September 28, 2023
+Link https://docs.getdbt.com/reference/reso... by Pradhnya Shahu
+9/28/23 5:07 PM
+Pradhnya Shahu
+
+https://docs.getdbt.com/reference/resource-properties/tests\
+
+Url Preview for About tests property | dbt Developer Hub
+About tests property | dbt Developer Hub
+
+docs.getdbt.com
+Link https://docs.getdbt.com/reference/reso... by Pradhnya Shahu
+9/28/23 5:07 PMPradhnya Shahu
+
+https://docs.getdbt.com/reference/resource-properties/tests
+
+Url Preview for About tests property | dbt Developer Hub
+About tests property | dbt Developer Hub
+
+docs.getdbt.com
+September 29, 2023
+Link https://discourse.getdbt.com/t/example... by Pradhnya Shahu
+9/29/23 2:13 PM
+Pradhnya Shahu
+
+https://discourse.getdbt.com/t/examples-of-custom-schema-tests/181/4
+
+Url Preview for Examples of custom schema tests
+Examples of custom schema tests
+
+We put all of the custom schema tests we find useful in dbt-utils. One pattern which is super simple but really useful to implement is the use of the expression_is_true test, so you can define you...
+
+discourse.getdbt.com
+is_between test sample by Pradhnya Shahu
+9/29/23 2:13 PMPradhnya Shahu
+
+is_between test sample
+
+October 2, 2023
+profiles.yml Link https://www.youtube.com/... by Pradhnya Shahu
+10/2/23 8:29 PM
+Pradhnya Shahu
+
+profiles.yml https://www.youtube.com/watch?v=5rNquRnNb4E&list=PLy4OcwImJzBLJzLYxpxaPUmCWp8j1esvT&index=1
+
+October 3, 2023
+ lmn1234# by Pradhnya Shahu
+10/3/23 2:55 PM
+Pradhnya Shahu
+
+ lmn1234#
+
+Worked dbt profile macros: get_profile ( L... by Pradhnya Shahu
+10/3/23 5:02 PM
+Pradhnya Shahu
+
+Worked dbt profile macros: get_profile (source)
+
+October 6, 2023
+Link https://spectra-dev.dev.fosfor.com/spe... by Pradhnya Shahu
+10/6/23 11:54 AM
+Pradhnya Shahu
+
+https://spectra-dev.dev.fosfor.com/spectra/#/projects
+
+October 16, 2023
+the Associate Cloud Engineer learning path  by Pradhnya Shahu
+10/16/23 1:41 PM
+Pradhnya Shahu
+
+the Associate Cloud Engineer learning path 
+
+October 20, 2023
+  profiles.yml   demo_task:   outputs: ... by Pradhnya Shahu
+10/20/23 7:16 PM
+Pradhnya Shahu
+
+  profiles.yml
+
+ 
+
+demo_task:
+  outputs:
+    dev:
+      account: 'fya62509.us-east-1'
+      database: spectra_dbt_dev_db
+      password: Spectra@2022
+      role: rl_dev_spectra_dbt
+      schema: dev_curated
+      threads: 1
+      type: snowflake
+      user: sunilm.kumar@lntinfotech.com
+      warehouse: wh_dev_spectra_dbt
+  target: dev
+
+October 26, 2023
+           Link https://docs.hevodata.com/t... by Pradhnya Shahu
+10/26/23 6:24 PM
+Pradhnya Shahu
+
+          https://docs.hevodata.com/transform/dbt-projects/setting-up-dbt-in-git/  
+
+November 2, 2023
+dbt_project.yml: vars:  db_schema_mapping: ... by Pradhnya Shahu
+11/2/23 3:57 PM
+Edited
+Pradhnya Shahu
+
+dbt_project.yml:
+
+vars:
+ db_schema_mapping:
+   unt: unt_curated
+   uat: uat_curated
+   prd: prd_curated
+
+ 
+
+{{
+config(
+ materialized='view',
+ schema=var('db_schema_mapping')[target.name]
+)}}
+
+SELECT * FROM {{ var('db_schema_mapping')[target.name] }}.your_table;
+
+like 1
+
+November 17, 2023
+account: fya62509.us-east-1 user: sunilm.ku... by Pradhnya Shahu
+11/17/23 2:25 PM
+Pradhnya Shahu
+
+account: fya62509.us-east-1
+user: sunilm.kumar@lntinfotech.com
+database: FOSFOR_SPECTRA
+warehouse: FOSFOR_SPECTRA
+role: ACCOUNTADMIN
+
+ 
+
+-----BEGIN ENCRYPTED PRIVATE KEY-----
+MIIFHDBOBgkqhkiG9w0BBQ0wQTApBgkqhkiG9w0BBQwwHAQI7ZKb0T11vvkCAggA
+MAwGCCqGSIb3DQIJBQAwFAYIKoZIhvcNAwcECB0Z4+vh7VgoBIIEyNeTqM3YwUrj
+/mUnWB4LF6ttjXKPPe21y0OYMr5ca0rYyVFTzgi/jTBJX+VBIEVksMt00u7aaYf4
+qTfGN487Z+oiLoj/zcgC8gaNW9GExD1VHEXG3brbBdI38CDsGmImIt6PBmyS55Ze
+T5259ZB72avUY+UX4qpMLaP7fevw+Mk/LwS3GFuq+9GPD5L1c0/++RDLX926wcLj
+wC86mozJ+ArAoGi4eQF9A4EpHoXHaRWuf1g063/vBysH7WqpqaBQgpWQRM+XULk2
+5q5W1wbzBTNMZchCa/BJyRqOnHOpYGxRiKsVs9IVkrudY3BZVpjo/gw3kD3GxqVV
+1DZnSeuR1h2KX04h0ev8ulsrgGnSy4QI/FL+tLDBoMmIirsyR3j9gHXnRk55JcRq
+iE7+qV+rM2MvEKuhtyyfT3YJUSkcyeLRNy6oqoJPUhSOzYsClzxsynvv52+At+mw
+t3pblHijh45/mq9p8xIOu+8TdSesx6zjttNPlSIfymxg93fFt+YTJ31y3d4fvefI
+HbCvSoVDiohb0E8WC9PzhcDa+ubcvANJWHaYOn63yGWTPcVgeSEfShiR+nJ98Aqv
+t2kZuF6cwtfPLFePqxOK21BH2SK2JyrmzqOfyVBjbG1Pj1MI2FQDlLi0wVOs8oR2
+Z1QJ7SfyeN5VPHvRXnlzP2gGVPJs7Bc+4bv+Js/ZxD62SHpNtsmSN71iUEBcKMuI
+mpj4EKsRivduDdFXLb1cINW6fsh7qy/uJoQu5WiuFkBqVV8K14Veu+9EtESXH3g5
+VTieztHkoTu3W98yxVEr1U3fb9M3eIrkxZ3fMSk+pwkUnKFtQhhTyRY4dVyLZQFd
+Spf/i+iYWoRSBQoTYoYr2nqOfzjRgSFC6KP4A+rHe3JyrkuG0c1UK+HDVLQV3mAO
+RESo39UFZhK/oMb/Ck4xrO13+UBeBiLgtZpNue0FeG2MbZoh6XCMuNKK1lrK+p24
+aSj2SDrpeIVGJVR3WBvS8XEDSMlf4QaiJfeVzVbGvqms/VUwkonA74sZPF8bRgBw
+QWLWD53zDbe9dS6kK3Au4JhYYDofB23rIffMaDAGivUXu1DwkG2tLaUwzLHCAP14
+YotEvhIblQ482UDfi6PoT95lWXFjD8bKfK2LG17jLQ9JaTn4gq4n3Z0e3ygYzlYn
+bNwi6m/0COT7jqgl9g9DTjy8F4d5dYe1gGaGX2IYmZHXGpBCTwAG13DC4GIW6uyR
+oiR0W06m2S7PI7HA+S6OJUVeTKMSXcB5JttH5afFCN9KdiBfxd1B7jIxSa67slEv
++nm57lYSj+iqq/YA9ycRXvwppVDU+Ql4ZkJ134cL0uI7KfZ6z3g477BvCaxmRJQW
+eaXii0JNfsvAUYep+OvfyIfEDbNl9ThJKvmGR3T7EFeCiOXhZty0K6mAWd2lo97q
+tSBA+zLPCW+zHUgVJ2DILVGEKzxJX5jDrfy9U1S8o2YhjE4UjXWZLpStIMPAy6Ot
+DW1rvLQtIXC9Rujo9+RtjbEs8Qfot7u7YySrjeVvRbb65kf6biSjVYgH6bv1uutZ
+ipZ1MbLC54DZtz7bj84tp612AxlaBx5xaVfkywpejr63V4JRMfG7MszVqEJpt0gw
+xXgUy3V6nLjKUcjnsptrfQ==
+-----END ENCRYPTED PRIVATE KEY-----
+
+ 
+
+Passphrase: test1234
+
+Link https://app.slack.com/client/T0VLPD22H... by Pradhnya Shahu
+11/17/23 2:38 PM
+Pradhnya Shahu
+
+https://app.slack.com/client/T0VLPD22H/C0VLZM3U2
+
+Link https://www.propeldata.com/blog/connec... by Pradhnya Shahu
+11/17/23 2:52 PM
+Pradhnya Shahu
+
+https://www.propeldata.com/blog/connecting-dbt-and-snowflake-a-step-by-step-guide
+
+Link https://docs.getdbt.com/docs/core/conn... by Pradhnya Shahu
+11/17/23 3:23 PM
+Pradhnya Shahu
+
+https://docs.getdbt.com/docs/core/connect-data-platform/snowflake-setup
+
+November 21, 2023
+Link https://stackoverflow.com/questions/63... by Pradhnya Shahu
+11/21/23 2:05 PM
+Pradhnya Shahu
+
+https://stackoverflow.com/questions/63776820/running-application-with-kubernetes-secrets-locally
+
+Url Preview for Running application with Kubernetes Secrets locally
+Running application with Kubernetes Secrets locally
+
+I have application.yaml file which contains database properties fetched from Secrets object in Kubernetes Cluster in separate deployment environment. However, when I try to run that application loc...
+
+stackoverflow.com
+November 24, 2023
+ADF, Talend, Python              by Pradhnya Shahu
+11/24/23 12:18 PM
+Pradhnya Shahu
+
+ADF, Talend, Python             
+
+November 28, 2023
+Link https://help.blackboard.com/Learn/Inst... by Pradhnya Shahu
+11/28/23 2:38 PM
+Pradhnya Shahu
+
+https://help.blackboard.com/Learn/Instructor/Original/Tests_Pools_Surveys/Question_Types/Hot_Spot_Questions
+
+November 30, 2023
+Link Shared with you - OneDrive (sharepoint... by Pradhnya Shahu
+11/30/23 9:36 AM
+Pradhnya Shahu
+
+Shared with you - OneDrive (sharepoint.com)
+
+Link https://datahubproject.io/docs/feature by Pradhnya Shahu
+11/30/23 12:19 PM
+Pradhnya Shahu
+
+https://datahubproject.io/docs/features
+
+Link https://www.techtarget.com/searchdatam... by Pradhnya Shahu
+11/30/23 5:20 PM
+Pradhnya Shahu
+
+https://www.techtarget.com/searchdatamanagement/feature/16-top-data-catalog-software-tools-to-consider-using
+
+Url Preview for 18 Top Data Catalog Software Tools to Consider Using in 2023
+18 Top Data Catalog Software Tools to Consider Using in 2023
+
+Learn about 18 top data catalog tools, including information on the key features, capabilities and components in these data catalog software products.
+
+www.techtarget.com
+December 1, 2023
+          select     dept.dept_name,      a... by Pradhnya Shahu
+12/1/23 2:02 PM
+Pradhnya Shahu
+
+          select
+
+    dept.dept_name,
+
+    avg(emp.salary) as avg_sal,
+
+    min(emp.salary) as min_sal,
+
+    max(emp.salary) as max_sal
+
+from
+
+    raw.public.dept
+
+inner join
+
+    raw.public.emp
+
+ON
+
+    dept.dept_id=emp.department
+
+group by 1
+
+     
+
+December 3, 2023
+Message by Pradhnya Shahu, has an attachment.
+12/3/23 10:13 PM
+Pradhnya Shahu
+
+PROMPT_SHEET 1.xlsx
+December 4, 2023
+basic functions, datatypes, syntaxes, objec... by Pradhnya Shahu
+12/4/23 5:47 PM
+Edited
+Pradhnya Shahu
+
+basic functions, datatypes, syntaxes, objects, class, constructors, flask, jango, web framework (python:corey)
+
+December 5, 2023
+notejs reactjs by Pradhnya Shahu
+12/5/23 11:50 AM
+Pradhnya Shahu
+
+notejs reactjs
+
+December 20, 2023
+Get know how to train model? best practices... by Pradhnya Shahu
+12/20/23 10:46 AM
+Pradhnya Shahu
+
+Get know how to train model? best practices followed or not?
+
+why encoding(tokenizer), NLP -sentiment ana... by Pradhnya Shahu
+12/20/23 11:39 AM
+Pradhnya Shahu
+
+why encoding(tokenizer), NLP -sentiment analysis,  LSTM - forward back propagation, LLM(manual evaluation and few metrics like distribution of token), 
+
+d,2,3 (neural n/w) , transformers by Pradhnya Shahu
+12/20/23 11:40 AMPradhnya Shahu
+
+d,2,3 (neural n/w) , transformers
+
+December 21, 2023
+Please find the Databricks Connection Detai... by Pradhnya Shahu
+12/21/23 12:11 PM
+Pradhnya Shahu
+
+Please find the Databricks Connection Details:
+
+catalog: hive_metastore
+
+schema: default
+
+host: adb-8447231738679844.4.azuredatabricks.net
+
+http_path: /sql/1.0/warehouses/adacbf0412a659b0
+
+auth_type: oauth
+
+client_id: 571b8ae8-8a41-49d2-8ea9-32fc54aac0c6
+
+client_secret: gCJ8Q~5To7YNcpSHRp89vIIn0i3dY4wf.f6D4cAK
+
+December 22, 2023
+Link https://www.youtube.com/watch?v=w2Gglm... by Pradhnya Shahu
+12/22/23 2:13 PM
+Pradhnya Shahu
+
+https://www.youtube.com/watch?v=w2GglmYHfmM
+
+December 27, 2023
+column transformer in ML by Pradhnya Shahu
+12/27/23 11:14 AM
+Pradhnya Shahu
+
+column transformer in ML
+
+Multicolinarity: Linear regression, logic r... by Pradhnya Shahu
+12/27/23 2:26 PM
+Pradhnya Shahu
+
+Multicolinarity: Linear regression, logic regression
+
+Link https://www.youtube.com/watch?v=U5oCv3... by Pradhnya Shahu
+12/27/23 5:32 PM
+Pradhnya Shahu
+
+https://www.youtube.com/watch?v=U5oCv3JKWKA
+
+January 1
+ML videos : 9 done by Pradhnya Shahu
+1/1 3:33 PM
+Edited
+Pradhnya Shahu
+
+ML videos : 9 done
+
+January 3
+Link https://www.google.com/search?q=transf... by Pradhnya Shahu
+1/3 7:41 PM
+Pradhnya Shahu
+
+https://www.google.com/search?q=transformers+in+machine+learning&safe=active&sca_esv=595369570&rlz=1C1GCEA_enIN1086IN1086&tbm=vid&source=lnms&sa=X&ved=2ahUKEwiD373esMGDAxVdd2wGHZKiDDMQ_AUoAnoECAEQBA&biw=1366&bih=599&dpr=1#fpstate=ive&vld=cid:cf81e753,vid:ZXiruGOCn9s,st:0
+
+....... Transformer by Pradhnya Shahu
+1/3 7:42 PMPradhnya Shahu
+
+....... Transformer
+
+January 9
+Link DBT Board - Agile board - JIRA (atlass... by Pradhnya Shahu
+1/9 11:24 AM
+Pradhnya Shahu
+
+DBT Board - Agile board - JIRA (atlassian.net)
+
+Url Preview for Log in with Atlassian account
+Log in with Atlassian account
+
+Log in to Jira, Confluence, and all other Atlassian Cloud products here. Not an Atlassian user? Sign up for free.
+
+maxiqaiq.atlassian.net
+Link https://www.youtube.com/watch?v=rzG1qo... by Pradhnya Shahu
+1/9 1:05 PM
+Pradhnya Shahu
+
+https://www.youtube.com/watch?v=rzG1qojjUcQ
+
+Link https://streamlit.io/ by Pradhnya Shahu
+1/9 2:07 PM
+Pradhnya Shahu
+
+https://streamlit.io/
+
+Url Preview for Streamlit • A faster way to build and share data apps
+Streamlit • A faster way to build and share data apps
+
+Streamlit is an open-source Python framework for machine learning and data science teams. Create interactive data apps in minutes.
+
+streamlit.io
+Message by Pradhnya Shahu, has an attachment.
+1/9 2:24 PM
+Pradhnya Shahu
+
+med certificate PS_240107_172553.pdf
+January 10
+Link https://www.youtube.com/watch?v=_ZvnD7... by Pradhnya Shahu
+1/10 5:52 PM
+Pradhnya Shahu
+
+https://www.youtube.com/watch?v=_ZvnD73m40o
+
+imp peft: Link https://www.youtube.com/wat... by Pradhnya Shahu
+1/10 6:24 PM
+Edited
+Pradhnya Shahu
+
+imp peft: https://www.youtube.com/watch?v=Us5ZFp16PaU
+
+January 11
+[Yesterday 7:46 PM] Saurabh Kamath 4. Pradh... by Pradhnya Shahu
+1/11 9:40 AM
+Pradhnya Shahu
+
+[Yesterday 7:46 PM] Saurabh Kamath
+
+4. Pradhnya: Try Snowflake & Databricks specific testing on foundation model using prompt engineering
+
+like 2
+
+Link Refract · Transformers_CPU (fosfor.com by Pradhnya Shahu
+1/11 2:20 PM
+Pradhnya Shahu
+
+Refract · Transformers_CPU (fosfor.com)
+
+January 12
+FSR - 5357 : Created additional prompts an... by Pradhnya Shahu
+1/12 6:34 PM
+Pradhnya Shahu
+
+FSR - 5357 : Created additional prompts and shared for fine tuning.
+
+January 16
+question = "Create a DBT model that aggrega... by Pradhnya Shahu
+1/16 3:29 PM
+Pradhnya Shahu
+
+question = "Create a DBT model that aggregates model customer and source order information and appends on every build."
+
+January 17
+Link Refract (fosfor.com) by Pradhnya Shahu
+1/17 10:55 AM
+Pradhnya Shahu
+
+Refract (fosfor.com)
+
+777 permission by Pradhnya Shahu
+1/17 4:24 PM
+Pradhnya Shahu
+
+777 permission
+
+cluster C Wing 2 4th floor LTI -> EON IT pa... by Pradhnya Shahu
+1/17 5:07 PM
+Pradhnya Shahu
+
+cluster C Wing 2 4th floor LTI -> EON IT park phase !
+
+chmod -R 777 by Pradhnya Shahu
+1/17 9:41 PM
+Pradhnya Shahu
+
+chmod -R 777
+
+January 18
+  Hit    sudo chmod -R 777  /home/mosaic-ai by Pradhnya Shahu
+1/18 5:06 PM
+Pradhnya Shahu
+
+ 
+
+Hit 
+
+ 
+
+sudo chmod -R 777  /home/mosaic-ai
+
+January 19
+RAG Magicoder-Snowflake_Databricks by Pradhnya Shahu
+1/19 10:51 AM
+Pradhnya Shahu
+
+RAG Magicoder-Snowflake_Databricks
+
+question = "create a dbt model with view ma... by Pradhnya Shahu
+1/19 11:01 AM
+Pradhnya Shahu
+
+question = "create a dbt model with view materialization to calcuate average salary from employee table in snowflake warehouse having column names such as employee_id, employee_name, department, salary"
+
+January 30
+Link https://docs.getdbt.com/reference/dbt-... by Pradhnya Shahu
+1/30 5:07 PM
+Pradhnya Shahu
+
+https://docs.getdbt.com/reference/dbt-jinja-functions/set
+
+Url Preview for About set context method | dbt Developer Hub
+About set context method | dbt Developer Hub
+
+Converts any iterable to a sequence of iterable and unique elements.
+
+docs.getdbt.com
+January 31
+hash by Pradhnya Shahu
+1/31 11:07 AM
+Pradhnya Shahu
+
+hash
+
+Grinning face with smiling eyes by Pradhnya Shahu
+1/31 11:56 AM
+Pradhnya Shahu
+
+grinningfacewithsmilingeyes
+
+February 2
+TO_JSON and PARSE_JSON are (almost) conv... by Pradhnya Shahu
+2/2 11:45 AM
+Pradhnya Shahu
+
+TO_JSON and PARSE_JSON are (almost) converse or reciprocal functions in Snowflake
+
+The PARSE_JSON function takes a string as input and returns a JSON-compatible VARIANT.
+The TO_JSON function takes a JSON-compatible VARIANT and returns a string.
+Databricks:  from_json(jsonStr, schema [, o... by Pradhnya Shahu
+2/2 11:49 AMPradhnya Shahu
+
+Databricks: 
+
+from_json(jsonStr, schema [, options])
+to_json(expr [, options] )
+vector database by Pradhnya Shahu
+2/2 7:04 PM
+Pradhnya Shahu
+
+vector database
+
+February 8
+Link SQLFluff by Pradhnya Shahu
+2/8 12:05 PM
+Pradhnya Shahu
+
+SQLFluff
+
+Url Preview for SQLFluff
+SQLFluff
+
+📜 The SQL Linter for humans
+
+sqlfluff.com
+Link https://docs.getdbt.com/reference/dbt-... by Pradhnya Shahu
+2/8 12:51 PM
+Pradhnya Shahu
+
+https://docs.getdbt.com/reference/dbt-jinja-functions/set
+
+Url Preview for About set context method | dbt Developer Hub
+About set context method | dbt Developer Hub
+
+Converts any iterable to a sequence of iterable and unique elements.
+
+docs.getdbt.com
+Link https://datacoves.com/post/dbt-jinja-f... by Pradhnya Shahu
+2/8 12:52 PMPradhnya Shahu
+
+https://datacoves.com/post/dbt-jinja-functions-cheat-sheet
+
+Url Preview for Ultimate dbt Jinja Functions Cheat Sheet - Datacoves
+Ultimate dbt Jinja Functions Cheat Sheet - Datacoves
+
+This dbt Jinja Functions cheat sheet covers the jinja features that dbt-core has to simplify the data transformation workflow. Use it as a handy reference.
+
+datacoves.com
+Link https://docs.snowplow.io/docs/ by Pradhnya Shahu
+2/8 4:59 PM
+Pradhnya Shahu
+
+https://docs.snowplow.io/docs/
+
+February 9
+Link https://docs.getdbt.com/reference/reso... by Pradhnya Shahu
+2/9 4:09 PM
+Pradhnya Shahu
+
+https://docs.getdbt.com/reference/resource-properties/external
+
+Link How to query data outside of Snowflake... by Pradhnya Shahu
+2/9 6:38 PM
+Pradhnya Shahu
+
+How to query data outside of Snowflake using External Tables and Table Formats | Snowflake Demo - YouTube
+
+February 13
+external-dbt-stage by Pradhnya Shahu
+2/13 11:11 AM
+Pradhnya Shahu
+
+external-dbt-stage
+
+s3://mosaic-data-catalog/dbt-stage/ by Pradhnya Shahu
+2/13 11:29 AM
+Pradhnya Shahu
+
+s3://mosaic-data-catalog/dbt-stage/
+
+s3://mosaic-data-catalog/dbt-stage/dbt-dumm... by Pradhnya Shahu
+2/13 2:05 PM
+Pradhnya Shahu
+
+s3://mosaic-data-catalog/dbt-stage/dbt-dummy-stage.csv
+
+s3://mosaic-data-catalog/dbt-stage/ by Pradhnya Shahu
+2/13 2:05 PM
+Edited
+Pradhnya Shahu
+
+s3://mosaic-data-catalog/dbt-stage/
+
+s3://mosaic-data-catalog/dbt-stage/dbtdummy... by Pradhnya Shahu
+2/13 6:27 PM
+Pradhnya Shahu
+
+s3://mosaic-data-catalog/dbt-stage/dbtdummystage.csv
+
+Link https://mosaic-data-catalog.s3.amazona... by Pradhnya Shahu
+2/13 6:31 PMPradhnya Shahu
+
+https://mosaic-data-catalog.s3.amazonaws.com/dbt-stage/dbtdummystage.csv
+
+Link https://medium.com/slateco-blog/doing-... by Pradhnya Shahu
+2/13 6:48 PM
+Pradhnya Shahu
+
+https://medium.com/slateco-blog/doing-more-with-less-usingdbt-to-load-data-from-aws-s3-to-snowflake-via-external-tables-a699d290b93f
+
+Url Preview for Doing More With Less: Using DBT to load data from AWS S3 to Snowflake via External Tables
+Doing More With Less: Using DBT to load data from AWS S3 to Snowflake via External Tables
+
+This is a guide to walk you through the loading of data from AWS to snowflake using external tables and DBT, with no additional tooling.
+
+medium.com
+February 15
+Link https://discourse.getdbt.com/t/dbt-run... by Pradhnya Shahu
+2/15 10:52 AM
+Pradhnya Shahu
+
+https://discourse.getdbt.com/t/dbt-run-error-runtime/8958/3
+
+February 16
+imp: Link https://interworks.com/blog/2023... by Pradhnya Shahu
+2/16 10:25 AM
+Pradhnya Shahu
+
+imp: https://interworks.com/blog/2023/09/19/snowflake-external-tables-connect-efficiently-to-your-data-lake/
+
+Account ID :- lti-aiq user:- product-supp... by Pradhnya Shahu
+2/16 7:14 PM
+Pradhnya Shahu
+
+Account ID :- lti-aiq
+user:- product-support  
+password :- Fosfor@dece2023  
+
+February 22
+on_schema_change : check for all materializ... by Pradhnya Shahu
+2/22 2:54 PM
+Pradhnya Shahu
+
+on_schema_change : check for all materialization
+
+February 26
+in snapshot by Pradhnya Shahu
+2/26 12:02 PM
+Pradhnya Shahu
+
+in snapshot
+
+February 29
+Link https://www.youtube.com/watch?v=pNE9J8... by Pradhnya Shahu
+2/29 12:41 PM
+Pradhnya Shahu
+
+https://www.youtube.com/watch?v=pNE9J81aYLc
+
+March 1
+Link https://docs.getdbt.com/reference/reso... by Pradhnya Shahu
+3/1 3:06 PM
+Pradhnya Shahu
+
+https://docs.getdbt.com/reference/resource-configs/snowflake-configs
+
+Url Preview for Snowflake configurations | dbt Developer Hub
+Snowflake configurations | dbt Developer Hub
+
+Snowflake Configurations - Read this in-depth guide to learn about configurations in dbt.
+
+docs.getdbt.com
+March 4
+Link https://docs.snowflake.com/en/sql-refe... by Pradhnya Shahu
+3/4 7:44 PM
+Pradhnya Shahu
+
+https://docs.snowflake.com/en/sql-reference/sql/create-external-volume
+
+March 5
+Link https://www.youtube.com/watch?v=3TMH5f... by Pradhnya Shahu
+3/5 10:12 AM
+Pradhnya Shahu
+
+https://www.youtube.com/watch?v=3TMH5fKklbw
+
+Url Preview for How to create dbt custom materialization - YouTube
+How to create dbt custom materialization - YouTube
+
+How to create dbt custom materializationBuilding a dbt custom materialization can sound very complex and I have tried to simplify it. I have explained line b...
+
+www.youtube.com
+5724 by Pradhnya Shahu
+3/5 11:32 AM
+Pradhnya Shahu
+
+5724
+
+March 6
+iceberg-datalake by Pradhnya Shahu
+3/6 9:54 AM
+Pradhnya Shahu
+
+iceberg-datalake
+
+s3://mosaic-data-catalog/iceberg-datalake/ by Pradhnya Shahu
+3/6 9:55 AMPradhnya Shahu
+
+s3://mosaic-data-catalog/iceberg-datalake/
+
+Link https://noahlk.medium.com/three-dbt-ma... by Pradhnya Shahu
+3/6 5:18 PM
+Pradhnya Shahu
+
+https://noahlk.medium.com/three-dbt-macros-i-use-every-day-2966b3ad9b26
+
+Url Preview for Three dbt Macros I Use Every Day
+Three dbt Macros I Use Every Day
+
+Last month my team here at Tempus built out a new data mart using our normal tech stack of SQL + AirFlow + dbt in GCP, and I realized that…
+
+noahlk.medium.com
+March 7
+Link https://gist.github.com/jeremyyeo/1927... by Pradhnya Shahu
+3/7 10:16 AM
+Pradhnya Shahu
+
+https://gist.github.com/jeremyyeo/1927816bfaebcf3be91f605e9d84d215
+
+Url Preview for Making a dbt materialization that ignores certain columns #dbt
+Making a dbt materialization that ignores certain columns #dbt
+
+Making a dbt materialization that ignores certain columns #dbt - README.md
+
+gist.github.com
+Message by Pradhnya Shahu, has an attachment.
+3/7 12:39 PM
+Pradhnya Shahu
+
+01_GSOverview (1).pptx
+01_GSOverview (1).pptx
+dbt/include/global_project/macros/adapters/... by Pradhnya Shahu
+3/7 12:39 PMPradhnya Shahu
+
+dbt/include/global_project/macros/adapters/relation.sql
+March 11
+{% materialization dummy_col , adapter= '... by Pradhnya Shahu
+3/11 10:56 AM
+Pradhnya Shahu
+
+{% materialization dummy_col, adapter='default' %}
+
+ 
+
+{%- set target_relation = this -%}
+
+{%- set temp_relation = make_temp_relation(target_relation) -%}
+
+ 
+
+{% set existing = load_cached_relation(target_relation) -%}
+
+{%- if existing is none or should_full_refresh() -%}
+
+    {%- set build_sql = get_dummy_col_sql_initial(temp_relation, target_relation, sql) -%}
+
+{%- else -%}
+
+    {%- set build_sql = get_dummy_col_sql(temp_relation, target_relation, sql) -%}
+
+{%- endif -%}
+
+ 
+
+{{- run_hooks(pre_hooks) -}}
+
+ 
+
+{% call statement("main") %}
+
+    {{ build_sql }}
+
+{% endcall %}
+
+ 
+
+{{- run_hooks(post_hooks) -}}
+
+ 
+
+{{- return({'relations': [target_relation]}) -}}
+
+ 
+
+{% endmaterialization %}
+
+ 
+
+{% macro get_dummy_col_sql_initial(temp_relation, target_relation, sql) %}
+
+    {{- get_create_table_as_sql(True, temp_relation, sql) -}}
+
+ 
+
+    {%- set extra_col_sql -%}
+
+        select
+
+            *,
+
+            'dummy_value' as dummy_column,
+
+            'dummy_one' as dummy_column_one
+
+        from {{ temp_relation }}
+
+    {%- endset -%}
+
+ 
+
+    {{- get_create_table_as_sql(False, target_relation, extra_col_sql) -}}
+
+{% endmacro %}
+
+ 
+
+ 
+
+{% macro get_dummy_col_sql(temp_relation, target_relation, sql) %}
+
+    {{- get_create_table_as_sql(False, temp_relation, sql) -}}
+
+ 
+
+    {%- set target_columns = adapter.get_columns_in_relation(target_relation) -%}
+
+    {%- set quoted_csv_columns = get_quoted_csv(target_columns | map(attribute="name")) -%}
+
+   
+
+    ALTER TABLE {{ target_relation }}
+
+ 
+
+    insert into {{ target_relation }}({{ quoted_csv_columns }})
+
+    select
+
+        *,
+
+        'dummy_value' as dummy_column
+
+    from {{ target_relation }}
+
+{% endmacro %}
+
+Link https://beta.bi3technologies.com/2023/... by Pradhnya Shahu
+3/11 12:17 PM
+Pradhnya Shahu
+
+https://beta.bi3technologies.com/2023/09/07/creating-custom-materialization-in-dbt-using-jinja2/
+
+Link https://github.com/venkatra/dbt_hacks/... by Pradhnya Shahu
+3/11 12:47 PM
+Pradhnya Shahu
+
+https://github.com/venkatra/dbt_hacks/blob/master/Persistent_Tables_Materialization.md
+
+Link https://docs.getdbt.com/reference/reso... by Pradhnya Shahu
+3/11 4:09 PM
+Pradhnya Shahu
+
+https://docs.getdbt.com/reference/resource-configs/firebolt-configs
+
+Url Preview for Firebolt configurations | dbt Developer Hub
+Firebolt configurations | dbt Developer Hub
+
+Setting quote_columns
+
+docs.getdbt.com
+March 12
+{% materialization iceberg, adapter='defaul... by Pradhnya Shahu
+3/12 10:46 AM
+Pradhnya Shahu
+
+{% materialization iceberg, adapter='default' %}
+
+    {% set iceberg_sql %}
+
+        CREATE OR REPLACE ICEBERG TABLE {{ this }}
+
+        EXTERNAL_VOLUME = 'ICEBERG_EXT_VOL_2024'
+
+        CATALOG = 'SNOWFLAKE'
+
+        BASE_LOCATION = ''
+
+        AS (
+
+            {{ sql }}
+
+        )      
+
+    {% endset %}
+
+    {% call statement('main') %}
+
+        {{ iceberg_sql }}
+
+    {% endcall %}
+
+    {{ return({'relations': [this]}) }}
+
+{% endmaterialization %}
+
+{% materialization iceberg_dynamic, adapter... by Pradhnya Shahu
+3/12 11:36 AM
+Pradhnya Shahu
+
+{% materialization iceberg_dynamic, adapter='default' %}
+
+{% set external_volume = config.get('external_volume', default=none)%}
+
+{% set catalog = config.get('catalog', default=none)%}
+
+{% set base_location = config.get('base_location', default=none)%}
+
+    {% call statement('main') %}
+
+        {{ create_iceberg_table(this, sql, external_volume, catalog, base_location) }}
+
+    {% endcall %}
+
+    {{ return({'relations': [this]}) }}
+
+{% endmaterialization %}
+
+ 
+
+{% macro create_iceberg_table(table_name, sql, external_volume, catalog, base_location) %}
+
+    CREATE OR REPLACE ICEBERG TABLE {{ table_name }}
+
+    EXTERNAL_VOLUME = '{{ external_volume }}'
+
+    CATALOG = '{{ catalog }}'
+
+    BASE_LOCATION = '{{ base_location }}'  
+
+    AS (
+
+        {{ sql }}
+
+    )
+
+{% endmacro %}
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+{% materialization iceberg_dynamic, adapter... by Pradhnya Shahu
+3/12 11:57 AM
+Pradhnya Shahu
+
+{% materialization iceberg_dynamic, adapter='default' %}
+
+{% set external_volume =  config.require('external_volume',) %}
+
+{% set catalog = config.require('catalog',)%}
+
+{% set base_location = config.get('base_location', default='')%}
+
+    {% call statement('main') %}
+
+        {{ create_iceberg_table(this, sql, external_volume, catalog, base_location) }}
+
+    {% endcall %}
+
+    {{ return({'relations': [this]}) }}
+
+{% endmaterialization %}
+
+ 
+
+{% macro create_iceberg_table(table_name, sql, external_volume, catalog, base_location) %}
+
+    CREATE OR REPLACE ICEBERG TABLE {{ table_name }}
+
+    EXTERNAL_VOLUME = '{{ external_volume }}'
+
+    CATALOG = '{{ catalog }}'
+
+    BASE_LOCATION = '{{ base_location }}'  
+
+    AS (
+
+        {{ sql }}
+
+    )
+
+{% endmacro %}
+ 
+check on lag by Pradhnya Shahu
+3/20 6:50 PM
+Pradhnya Shahu
+check on lag
+Begin Reference, dynamic tables in snowflak... by Pradhnya Shahu
+3/20 6:52 PM
+Pradhnya Shahu
+Pradhnya Shahu
+3/20/2024, 6:50 PM
+dynamic tables in snowflake
+insert overwrite
+TO DO: dynamic tables-execute & then follow... by Pradhnya Shahu
+3/20 7:17 PM
+Pradhnya Shahu
+TO DO: dynamic tables-execute & then following run check if recreates or drop etc.  
+incr -> truncate load by Pradhnya Shahu
+3/20 7:17 PM
+Pradhnya Shahu
+incr -> truncate load
+Begin Reference, TO DO: dynamic tables-exec... by Pradhnya Shahu
+3/20 7:18 PM
+Pradhnya Shahu
+Pradhnya Shahu
+3/20/2024, 7:17 PM
+TO DO: dynamic tables-execute & then following run check if recreates or drop etc.
+IMP
+March 21
+check on : Link https://docs.getdbt.com/re... by Pradhnya Shahu
+3/21 11:13 AM
+Pradhnya Shahu
+check on : https://docs.getdbt.com/reference/resource-configs/snowflake-configs
+Snowflake configurations | dbt Developer Hub
+Snowflake Configurations - Read this in-depth guide to learn about configurations in dbt.
+docs.getdbt.com
+March 22
+{% materialization iceberg_dynamic, adapter... by Pradhnya Shahu
+3/22 8:05 AM
+Pradhnya Shahu
+{% materialization iceberg_dynamic, adapter='default', supported_languages=['sql', 'python'] %}
+{%- set identifier = model['alias'] -%}
+{% set tags_config = config(tags) %}
+{% set external_volume =  config.require('external_volume',) %}
+{% set catalog = config.require('catalog',)%}
+{% set base_location = config.get('base_location', default='')%}
+{%- set full_refresh_mode = (should_full_refresh()) -%}
+{%- set old_relation = adapter.get_relation(database=database, schema=schema, identifier=identifier) -%}
+{%- set target_relation = api.Relation.create(identifier=identifier, schema=schema, database=database, type='table') -%}    
+{{- run_hooks(pre_hooks) -}}
+{% if old_relation is none %}
+    {% call statement('main') %}
+        {{ create_iceberg_table(target_relation, sql, external_volume, catalog, base_location, cluster_by ='') }}
+        {{ print(["Creating New model"]) }}
+    {% endcall %}
+{% elif full_refresh_mode %}
+    {{ drop_relation_if_exists(old_relation) }}
+    {{ print(["Full Refresh mode"]) }}
+    {% call statement('main') %}
+        {{ create_iceberg_table(target_relation, sql, external_volume, catalog, base_location, cluster_by ='') }}
+    {% endcall %}
+{% elif old_relation.is_table or old_relation.is_view %}
+    {{ drop_relation_if_exists(old_relation) }}
+    {{ print(["Dropping existing relation"]) }}
+    {% call statement('main') %}
+        {{ create_iceberg_table(target_relation, sql, external_volume, catalog, base_location, cluster_by ='') }}
+    {% endcall %}
+{% else %}     {#-- Implementation in progress for tmp_relation and incremental strategies--#}
+    {% call statement('main') %}
+        {{ create_iceberg_table(target_relation, sql, external_volume, catalog, base_location, cluster_by ='') }}
+    {% endcall %}
+{% endif %}
+ 
+{{- run_hooks(post_hooks) -}}
+    {{ print([sql]) }}
+    {{ return({'relations': [target_relation]}) }}
+{% endmaterialization %}
+ 
+{% macro create_iceberg_table(table_name, sql, external_volume, catalog, base_location, cluster_by='') %}
+    CREATE OR REPLACE ICEBERG TABLE {{ table_name }}
+    EXTERNAL_VOLUME = '{{ external_volume }}'
+    CATALOG = '{{ catalog }}'
+    BASE_LOCATION = '{{ base_location }}'  
+    {% if cluster_by %}
+    CLUSTER BY {{ cluster_by }}
+    {% endif %}
+    AS (
+        {{ sql }}
+    )
+{% endmacro %}
+Link https://docs.getdbt.com/reference/reso... by Pradhnya Shahu
+3/22 9:17 AM
+Pradhnya Shahu
+https://docs.getdbt.com/reference/resource-configs/snowflake-configs
+Snowflake configurations | dbt Developer Hub
+Snowflake Configurations - Read this in-depth guide to learn about configurations in dbt.
+docs.getdbt.com
+{{ config(grants = {'select': ['user_c']}) ... by Pradhnya Shahu
+3/22 9:18 AM
+Pradhnya Shahu
+{{ config(grants = {'select': ['user_c']}) }}
+has context menu
