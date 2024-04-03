@@ -1,0 +1,39 @@
+{% materialization iceberg_incremental_merge, adapter='default' %}
+{% set external_volume = config.require('external_volume') %}
+{% set catalog = config.require('catalog') %}
+{% set base_location = config.get('base_location', default='') %}
+{% set incremental_strategy = config.get('incremental_strategy') or 'merge' %}
+{% if incremental_strategy != 'merge' %}
+    {% do exceptions.raise_compiler_error("iceberg_incremental_merge materialization only supports 'merge' strategy.") %}
+{% endif %}
+
+{% call statement('main') %}
+    {{ create_iceberg_table(this, sql, external_volume, catalog, base_location, incremental_strategy) }}
+{% endcall %}
+
+{{ return({'relations': [this]}) }}
+{% endmaterialization %}
+
+{% macro create_iceberg_table(table_name, sql, external_volume, catalog, base_location, incremental_strategy) %}
+    CREATE OR REPLACE ICEBERG TABLE {{ table_name }}
+    EXTERNAL_VOLUME = '{{ external_volume }}'
+    CATALOG = '{{ catalog }}'
+    BASE_LOCATION = '{{ base_location }}'
+    AS (
+        SELECT *
+        FROM {{ table_name }}
+        UNION ALL
+        SELECT *
+        FROM {{ source('dbt_custom', 'my_source') }}
+    )
+    ON COMMIT
+    MERGE INTO {{ table_name }} USING {{ source('dbt_custom', 'my_source') }}
+    ON {{ table_name }}.id = {{ source('dbt_custom', 'my_source') }}.id
+    WHEN MATCHED THEN
+        UPDATE SET {{ table_name }}.* = {{ source('dbt_custom', 'my_source') }}.*
+    WHEN NOT MATCHED THEN
+        INSERT {{ table_name }}.*
+    {% if incremental_strategy == 'merge' %}
+        WHEN NOT MATCHED BY SOURCE THEN DELETE
+    {% endif %}
+{% endmacro %}
