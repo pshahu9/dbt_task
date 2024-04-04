@@ -1,0 +1,64 @@
+{% elif incremental_strategy == 'delete+insert' %}
+  {#-- Check if the source unique key is NULL or not present in the temporary table --#}
+  {%- set delete_null_or_missing_sql %}
+    DELETE FROM {{ target_relation }}
+    WHERE {{ target_relation }}.{{ unique_key }} IS NULL OR {{ target_relation }}.{{ unique_key }} NOT IN (SELECT {{ tmp_relation }}.{{ unique_key }} FROM {{ tmp_relation }});
+  {% endset %}
+
+  {%- call statement('delete_null_or_missing_records') -%}
+    {{ delete_null_or_missing_sql }}
+  {%- endcall -%}
+
+  {#-- Check if there are updated records --#}
+  {% set updated_records_count_sql %}
+    SELECT COUNT(*) AS updated_records_count
+    FROM {{ target_relation }} t
+    JOIN {{ tmp_relation }} s
+    ON t.{{ unique_key }} = s.{{ unique_key }}
+    WHERE t.{% for column in update_columns %}t.{{ column.name }} = s.{{ column.name }}{% if not loop.last %} AND {% endif %}{% endfor %}
+  {% endset %}
+
+  {% set updated_records_count = run_query(updated_records_count_sql).rows[0][0] %}
+
+  {#-- Perform delete and insert for updated records --#}
+  {% if updated_records_count > 0 %}
+    {%- set delete_updated_records_sql %}
+      DELETE FROM {{ target_relation }} t
+      USING {{ tmp_relation }} s
+      WHERE t.{{ unique_key }} = s.{{ unique_key }}
+      AND t.{% for column in update_columns %}t.{{ column.name }} = s.{{ column.name }}{% if not loop.last %} AND {% endif %}{% endfor %}
+    {% endset %}
+
+    {%- call statement('delete_updated_records') -%}
+      {{ delete_updated_records_sql }}
+    {%- endcall -%}
+
+    {%- set insert_updated_records_sql %}
+      INSERT INTO {{ target_relation }}
+      SELECT *
+      FROM {{ tmp_relation }} s
+      WHERE s.{{ unique_key }} NOT IN (SELECT t.{{ unique_key }} FROM {{ target_relation }} t)
+      AND s.{% for column in update_columns %}s.{{ column.name }} = s.{{ column.name }}{% if not loop.last %} AND {% endif %}{% endfor %}
+    {% endset %}
+
+    {%- call statement('insert_updated_records') -%}
+      {{ insert_updated_records_sql }}
+    {%- endcall -%}
+  {% endif %}
+
+  {#-- Check if there are new records to insert --#}
+  {% set count_new_records %}
+    SELECT COUNT(*) AS new_records_count
+    FROM {{ tmp_relation }}
+    WHERE {{ tmp_relation }}.{{ unique_key }} NOT IN (SELECT {{ target_relation }}.{{ unique_key }} FROM {{ target_relation }})
+  {% endset %}
+
+  {% set new_records_count = run_query(count_new_records).rows[0][0] %}
+
+  {#-- Perform insert only if there are new records --#}
+  {% if new_records_count > 0 %}
+    INSERT INTO {{ target_relation }}
+    SELECT *
+    FROM {{ tmp_relation }}
+    WHERE {{ tmp_relation }}.{{ unique_key }} NOT IN (SELECT {{ target_relation }}.{{ unique_key }} FROM {{ target_relation }})
+  {% endif %}
