@@ -1,0 +1,27 @@
+{% elif incremental_strategy == 'delete+insert' %}
+  {#-- Check if the source unique key is NULL or not present in the temporary table --#}
+  {%- set delete_null_or_missing_sql %}
+    DELETE FROM {{ target_relation }}
+    WHERE {{ unique_key }} IS NULL OR {{ unique_key }} NOT IN (SELECT {{ unique_key }} FROM {{ tmp_relation }});
+  {% endset %}
+
+  {%- call statement('delete_null_or_missing_records') -%}
+    {{ delete_null_or_missing_sql }}
+  {%- endcall -%}
+
+  {#-- Check if there are new records to insert --#}
+  {% set count_new_records %}
+    SELECT COUNT(*) AS new_records_count
+    FROM {{ tmp_relation }}
+    WHERE {{ unique_key }} NOT IN (SELECT {{ unique_key }} FROM {{ target_relation }})
+  {% endset %}
+
+  {% set new_records_count = run_query(count_new_records).rows[0][0] %}
+
+  {#-- Perform insert only if there are new records --#}
+  {% if new_records_count > 0 %}
+    INSERT INTO {{ target_relation }}
+    SELECT *
+    FROM {{ tmp_relation }}
+    WHERE {{ unique_key }} NOT IN (SELECT {{ unique_key }} FROM {{ target_relation }});
+  {% endif %}
