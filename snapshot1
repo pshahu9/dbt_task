@@ -1,0 +1,56 @@
+{% materialization snapshot_my_table, alias='my_table' %}
+
+{% set unique_key = config.get('unique_key') %}
+{% set timestamp_column = config.get('timestamp_column') %}
+{% set strategy = config.get('strategy') %}
+{% set check_column = config.get('check_column') %}
+{% set state = config.get('state', default='fresh') %}
+
+{% set snapshot_sql %}
+  SELECT *,
+         CURRENT_TIMESTAMP() AS dbt_snapshot_at
+  FROM {{ source('my_schema', 'my_table') }}
+  {% if state == 'fresh' %}
+    WHERE 1 = 0  -- To ensure we don't load any data initially
+  {% endif %}
+  {% if strategy == 'check' %}
+    WHERE {{ check_column }} >= '{{ snapshots['snapshot_my_table'].get('check_timestamp', '1970-01-01') }}'
+  {% endif %}
+{% endset %}
+
+{%- call statement('snapshot_query') -%}
+  {{ snapshot_sql }}
+{%- endcall -%}
+
+{% set config_snapshot %}
+  {{
+    snapshots['snapshot_my_table'] +
+    {
+      'unique_key': unique_key,
+      'strategy': strategy,
+      'check_column': check_column,
+      'state': state,
+      'timestamp_column': timestamp_column
+    }
+  }}
+{% endset %}
+
+{%- call config(config_snapshot) -%}
+{% endcall %}
+
+-----
+
+{{ config(
+    materialized='snapshot_my_table',
+    unique_key='your_unique_key_column',
+    strategy='scd2'
+) }}
+
+select
+    column1,
+    column2,
+    ...
+from
+    your_source_table
+-------------------------
+
