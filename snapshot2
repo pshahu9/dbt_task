@@ -1,0 +1,48 @@
+{%- materialization snapshot_custom_materialization -%}
+
+{%- set unique_key = config.get('unique_key') %}
+{%- set target_schema = config.get('target_schema') %}
+{%- set target_database = config.get('target_database') %}
+{%- set strategy = config.get('strategy') %}
+{%- set updated_at = config.get('updated_at') %}
+{%- set check_cols = config.get('check_cols') %}
+{%- set source_schema = this.schema %}
+{%- set source_table = this.alias %}
+
+{%- set snapshot_sql %}
+  SELECT *,
+         CURRENT_TIMESTAMP() AS dbt_snapshot_at
+  FROM {{ this }}
+  {% if state == 'fresh' %}
+    WHERE 1 = 0  -- To ensure we don't load any data initially
+  {% endif %}
+  {% if strategy == 'check' %}
+    WHERE {{ check_cols[0] }} >= '{{ snapshots[snapshot_name].get('check_timestamp', '1970-01-01') }}'
+  {% endif %}
+{% endset %}
+
+{%- call statement('snapshot_query') -%}
+  {{ snapshot_sql }}
+{%- endcall -%}
+
+{%- set config_snapshot %}
+  {{
+    snapshots[snapshot_name] +
+    {
+      'unique_key': unique_key,
+      'strategy': strategy,
+      'target_schema': target_schema,
+      'target_database': target_database,
+      'updated_at': updated_at,
+      'check_cols': check_cols
+    }
+  }}
+{% endset %}
+
+{%- call config(config_snapshot) -%}
+{% endcall %}
+
+{% endmaterialization %}
+
+----------------------
+
