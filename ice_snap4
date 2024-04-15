@@ -1,0 +1,49 @@
+{% materialization snapshot, default %}
+  {%- set config = model['config'] -%}
+
+  {%- set target_table = model.get('alias', model.get('name')) -%}
+
+  {%- set strategy_name = config.get('strategy') -%}
+  {%- set unique_key = config.get('unique_key') %}
+  -- grab current tables grants config for comparison later on
+  {%- set grant_config = config.get('grants') -%}
+
+  {% set target_relation_exists, target_relation = get_or_create_relation(
+          database=model.database,
+          schema=model.schema,
+          identifier=target_table,
+          type='table') -%}
+
+  {%- if not target_relation.is_table -%}
+    {% do exceptions.relation_wrong_type(target_relation, 'table') %}
+  {%- endif -%}
+
+  {% set iceberg_sql %}
+    CREATE TABLE IF NOT EXISTS {{ target_table }} (
+        -- Define your Iceberg table columns here, including metadata columns
+        dbt_updated_at TIMESTAMP_NTZ(6),
+        dbt_valid_from TIMESTAMP_NTZ(6),
+        dbt_valid_to TIMESTAMP_NTZ(6),
+        -- Add other columns from your source data as needed
+    )
+    CLUSTER BY (dbt_updated_at);  -- Cluster by the updated_at column for performance
+
+    {# Optional: Create the corresponding metadata table for Iceberg #}
+    CREATE TABLE IF NOT EXISTS {{ target_table }}_metadata (
+        dbt_snapshot_at TIMESTAMP_NTZ(6),
+        dbt_snapshot_type STRING,
+        dbt_valid_from TIMESTAMP_NTZ(6),
+        dbt_valid_to TIMESTAMP_NTZ(6),
+        dbt_unique_key STRING
+    );
+  {% endset %}
+
+  {{ iceberg_sql }}
+
+  {{ run_hooks(pre_hooks, inside_transaction=False) }}
+
+  {{ run_hooks(pre_hooks, inside_transaction=True) }}
+
+  {# Include the rest of your materialization code here #}
+
+{% endmaterialization %}
