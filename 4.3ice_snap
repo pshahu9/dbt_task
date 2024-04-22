@@ -1,3 +1,5 @@
+https://github.com/dbt-labs/dbt-adapters/blob/main/dbt/include/global_project/macros/materializations/snapshots/snapshot_merge.sql
+
 {% macro iceberg_snapshot_merge_sql(materialization_overrides, target, source, insert_cols) %}
   {% set target_columns = adapter.get_columns_in_relation(target) %}
   {% set target_column_names = target_columns | map(attribute='name') %}
