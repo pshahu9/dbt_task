@@ -1,0 +1,36 @@
+{% macro iceberg_snapshot_merge_sql(materialization_overrides, target, source, insert_cols) %}
+  {% set target_columns = adapter.get_columns_in_relation(target) %}
+  {% set target_column_names = target_columns | map(attribute='name') %}
+  {% set target_columns_sql = target_column_names | join(', ') %}
+
+  -- Use MERGE INTO to perform the merge operation
+  MERGE INTO {{ target }} t
+  USING {{ source }} s
+  ON t.{{ config.get('unique_key') }} = s.{{ config.get('unique_key') }}
+  WHEN MATCHED THEN
+    UPDATE SET
+      {% for col in insert_cols %}
+        {% if col != 'dbt_updated_at' %}
+          t.{{ col }} = s.{{ col }},
+        {% else %}
+          t.{{ col }} = s.{{ col }} AS {{ col }}_updated_at,
+        {% endif %}
+      {% endfor %}
+      t.dbt_updated_at = CURRENT_TIMESTAMP() AS dbt_updated_at_alias  -- Alias for dbt_updated_at
+  WHEN NOT MATCHED THEN
+    INSERT (
+      {{ target_columns_sql }},
+      dbt_updated_at
+    ) VALUES (
+      {% for col in insert_cols %}
+        {% if col != 'dbt_updated_at' %}
+          s.{{ col }},
+        {% else %}
+          s.{{ col }} AS {{ col }}_updated_at,
+        {% endif %}
+      {% endfor %}
+      CURRENT_TIMESTAMP() AS dbt_updated_at_alias  -- Alias for dbt_updated_at
+    )
+  {{- '' if not materialization_overrides else materialization_overrides | indent(2) }}
+  ;
+{% endmacro %}
