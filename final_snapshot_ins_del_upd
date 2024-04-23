@@ -1,0 +1,150 @@
+{% materialization snapshot_iceberg, default %}
+  {%- set config = model['config'] -%}
+  {%- set target_table = model.get('alias', model.get('name')) -%}
+  {%- set external_volume = config.get('external_volume') %}
+  {%- set base_location = config.get('base_location') %}
+  {%- set catalog = config.get('catalog') %}
+
+  {%- set strategy_name = config.get('strategy') -%}
+  {%- set unique_key = config.get('unique_key') -%}
+
+  {%- set grant_config = config.get('grants') -%}
+
+  {% set target_relation_exists, target_relation = get_or_create_relation(
+          database=model.database,
+          schema=model.schema,
+          identifier=target_table,
+          type='table') -%}
+
+  {%- if not target_relation.is_table -%}
+    {% do exceptions.relation_wrong_type(target_relation, 'table') %}
+  {%- endif -%}
+
+  {{ run_hooks(pre_hooks, inside_transaction=False) }}
+  {{ run_hooks(pre_hooks, inside_transaction=True) }}
+
+  {% set strategy_macro = strategy_dispatch(strategy_name) %}
+  {% set strategy = strategy_macro(model, "snapshotted_data", "source_data", config, target_relation_exists) %}
+
+  {% if not target_relation_exists %}
+    {% set build_sql = build_snapshot_table(strategy, model['compiled_code']) %}
+    {% set final_sql = create_iceberg_table_as(False, target_relation, build_sql, external_volume=external_volume, catalog=catalog, base_location=base_location) %}
+  {% else %}
+    {{ adapter.valid_snapshot_target(target_relation) }}
+
+    {% set staging_table = build_snapshot_staging_table(strategy, sql, target_relation) %}
+
+    -- this may no-op if the database does not require column expansion
+    {% do adapter.expand_target_column_types(from_relation=staging_table, to_relation=target_relation) %}
+
+    {% set missing_columns = adapter.get_missing_columns(staging_table, target_relation)
+                                 | rejectattr('name', 'equalto', 'dbt_change_type')
+                                 | rejectattr('name', 'equalto', 'DBT_CHANGE_TYPE')
+                                 | rejectattr('name', 'equalto', 'dbt_unique_key')
+                                 | rejectattr('name', 'equalto', 'DBT_UNIQUE_KEY')
+                                 | list %}
+    {% do create_columns(target_relation, missing_columns) %}
+
+    {% set source_columns = adapter.get_columns_in_relation(staging_table)
+                                 | rejectattr('name', 'equalto', 'dbt_change_type')
+                                 | rejectattr('name', 'equalto', 'DBT_CHANGE_TYPE')
+                                 | rejectattr('name', 'equalto', 'dbt_unique_key')
+                                 | rejectattr('name', 'equalto', 'DBT_UNIQUE_KEY')
+                                 | list %}
+    {% set quoted_source_columns = [] %}
+    {% for column in source_columns %}
+      {% do quoted_source_columns.append(adapter.quote(column.name)) %}
+    {% endfor %}
+    {% set final_sql = iceberg_snapshot_merge_sql(
+          target = target_relation,
+          source = staging_table,
+          insert_cols = quoted_source_columns
+       )
+    %}
+  {% endif %}
+
+  {% call statement('main') %}
+    {{ final_sql }}
+  {% endcall %}
+
+  {% set should_revoke = should_revoke(target_relation_exists, full_refresh_mode=False) %}
+  {% do apply_grants(target_relation, grant_config, should_revoke=should_revoke) %}
+  
+  {% do persist_docs(target_relation, model) %}
+
+  {% if not target_relation_exists %}
+    {% do create_indexes(target_relation) %}
+  {% endif %}
+
+  {{ run_hooks(post_hooks, inside_transaction=True) }}
+  {{ adapter.commit() }}
+
+  {% if staging_table is defined %}
+    {% do post_snapshot(staging_table) %}
+  {% endif %}
+
+  
+    {%- if strategy.invalidate_hard_deletes -%}
+
+    deletes as (
+
+        select
+            'delete' as dbt_change_type,
+            source_data.*,
+            {{ snapshot_get_time() }} as dbt_valid_from,
+            {{ snapshot_get_time() }} as dbt_updated_at,
+            {{ snapshot_get_time() }} as dbt_valid_to,
+            snapshotted_data.dbt_scd_id
+
+        from snapshotted_data
+        left join deletes_source_data as source_data on snapshotted_data.dbt_unique_key = source_data.dbt_unique_key
+        where source_data.dbt_unique_key is null
+    )
+    {%- endif %}
+
+  {{ run_hooks(post_hooks, inside_transaction=False) }}
+
+  {{ return({'relations': [target_relation]}) }}
+{% endmaterialization %}
+
+{% macro create_iceberg_table_as(materialization_overrides, target_relation, select_sql, external_volume, catalog, base_location) %}
+  {% set schema = target_relation.schema %}
+  {% set table = target_relation.identifier %}
+  
+  -- Drop the table if it already exists
+  DROP TABLE IF EXISTS {{ target_relation }} CASCADE;
+
+  -- Create the Iceberg table
+  CREATE TABLE {{ target_relation }} AS
+  {{ select_sql }}
+  {{- '' if not materialization_overrides else materialization_overrides | indent(2) }}
+  ;
+
+  -- Set the table properties for Iceberg
+  ALTER TABLE {{ target_relation }}
+  SET LOCATION '{{ external_volume }}/{{ catalog }}/{{ schema }}/{{ table }}'
+  BASE_LOCATION = '{{ base_location }}'
+  CATALOG = '{{ catalog }}'
+  ;
+{% endmacro %}
+
+{% macro iceberg_snapshot_merge_sql(materialization_overrides, target, source, insert_cols) %}
+
+ {%- set insert_cols_csv = insert_cols | join(', ') -%}
+ 
+ merge into {{ target }} as DBT_INTERNAL_DEST
+    using {{ source }} as DBT_INTERNAL_SOURCE
+    on DBT_INTERNAL_SOURCE.dbt_scd_id = DBT_INTERNAL_DEST.dbt_scd_id
+
+    when matched
+     and DBT_INTERNAL_DEST.dbt_valid_to is null
+     and DBT_INTERNAL_SOURCE.dbt_change_type in ('update', 'delete')
+        then update
+        set dbt_valid_to = DBT_INTERNAL_SOURCE.dbt_valid_to
+
+    when not matched
+     and DBT_INTERNAL_SOURCE.dbt_change_type = 'insert'
+        then insert ({{ insert_cols_csv }})
+        values ({{ insert_cols_csv }})
+
+{% endmacro %}
